@@ -68,3 +68,28 @@ func ExtractKeySpec(signingCert *x509.Certificate) (KeySpec, error) {
 		Msg: "invalid public key type",
 	}
 }
+
+// SignatureAlgorithm returns the signing algorithm associated with the KeySpec.
+func (k KeySpec) SignatureAlgorithm() Algorithm {
+	switch k.Type {
+	case KeyTypeEC:
+		switch k.Size {
+		case 256:
+			return AlgorithmES256
+		case 384:
+			return AlgorithmES384
+		case 521:
+			return AlgorithmES512
+		}
+	case KeyTypeRSA:
+		switch k.Size {
+		case 2048:
+			return AlgorithmPS256
+		case 3072:
+			return AlgorithmPS384
+		case 4096:
+			return AlgorithmPS512
+		}
+	}
+	return 0
+}

@@ -95,6 +95,32 @@ type Payload struct {
 	Content []byte
 }
 
+// SignRequest is used to generate Signature.
+type SignRequest struct {
+	// Payload is the payload to be signed.
+	Payload Payload
+
+	// Signer is the signer used to sign the digest.
+	Signer Signer
+
+	// SigningTime is the time at which the signature was generated.
+	SigningTime time.Time
+
+	// Expiry provides a “best by use” time for the artifact.
+	Expiry time.Time
+
+	// ExtendedSignedAttributes is additional signed attributes in the
+	// signature envelope.
+	ExtendedSignedAttributes []Attribute
+
+	// SigningAgent provides the identifier of the software (e.g. Notation)
+	// that produced the signature on behalf of the user.
+	SigningAgent string
+
+	// SigningScheme defines the Notary v2 Signing Scheme used by the signature.
+	SigningScheme SigningScheme
+}
+
 // ExtendedAttribute fetches the specified Attribute with provided key from
 // signerInfo.SignedAttributes.ExtendedAttributes.
 func (signerInfo *SignerInfo) ExtendedAttribute(key string) (Attribute, error) {
